@@ -17,4 +17,15 @@ def basic_calc_reset(basic_calc):
     basic_calc.reset()
     yield
 
+@pytest.fixture(
+    params=[TestCalc(), TestCalc(scientific=False)]
+)
+def basic_calc_fixture(request):
+    return request.param
 
+@pytest.fixture(scope="session", params=["basic", "scientific"])
+def calc_mode(request):
+    if request.param == "scientific":
+        return TestCalc.with_mode("scientific")
+    else:
+        return TestCalc.with_mode("basic")
